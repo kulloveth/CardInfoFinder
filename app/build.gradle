@@ -15,12 +15,24 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
+    viewBinding {
+        enabled = true
+    }
 
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+    }
+    kotlinOptions {
+        jvmTarget = "1.8"
+        freeCompilerArgs += ["-Xopt-in=kotlin.RequiresOptIn"]
+    }
+
+    compileOptions {
+        sourceCompatibility 1.8
+        targetCompatibility 1.8
     }
 
 }
@@ -31,7 +43,40 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.core:core-ktx:1.3.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+
+    // feature dependencies
+
+    //material design version
+    implementation "com.google.android.material:material:$materialDesignVersion"
+    //google vision api
+    implementation "com.google.android.gms:play-services-vision:$googleVision_version"
+    //image cropper
+    api "com.theartofdev.edmodo:android-image-cropper:$imageCropper_version"
+    //Retrofit
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    //gson converter
+    implementation "com.google.code.gson:gson:$gson_version"
+    //gson with retrofit
+    implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
+
+    //ok-http interceptor
+    implementation "com.squareup.okhttp3:logging-interceptor:$interceptor_version"
+
+    //LifeCycle
+    implementation "androidx.lifecycle:lifecycle-runtime:$lifeCycle_version"
+    implementation "androidx.lifecycle:lifecycle-extensions:$lifeCycle_version"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifeCycle_version"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifeCycle_version"
+
+    //coroutines
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutineVersion"
+
+    //stetho
+    implementation "com.facebook.stetho:stetho-okhttp3:$stetho_version"
+
     testImplementation 'junit:junit:4.12'
+    testImplementation "org.mockito:mockito-core:2.11.0"
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 }
