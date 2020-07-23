@@ -6,13 +6,145 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card_cv"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/card_view_height"
+        android:layout_margin="@dimen/double_standard_padding"
+        app:cardBackgroundColor="@color/colorPrimaryDark"
+        app:cardCornerRadius="@dimen/card_radius"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <TextView
+                android:id="@+id/scheme_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/standard_padding"
+                android:layout_marginTop="@dimen/standard_padding"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/card_text_size"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Visa" />
+
+            <TextView
+                android:id="@+id/currency_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/standard_padding"
+                android:layout_marginTop="@dimen/standard_padding"
+                android:layout_marginEnd="@dimen/standard_padding"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/card_text_size"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="NGN" />
+
+            <TextView
+                android:id="@+id/card_no"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/card_text_size"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="**** **** **** ****" />
+
+            <TextView
+                android:id="@+id/card_type_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/standard_padding"
+                android:layout_marginTop="@dimen/standard_padding"
+                android:layout_marginBottom="@dimen/half_standard_padding"
+                android:text="@string/card_type"
+                android:textColor="@color/label_color"
+                android:textSize="@dimen/card_text_size"
+                app:layout_constraintBottom_toTopOf="@id/card_type"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/card_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/standard_padding"
+                android:layout_marginTop="@dimen/standard_padding"
+                android:layout_marginBottom="@dimen/standard_padding"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/card_text_size"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:text="Debit" />
+
+            <TextView
+                android:id="@+id/bank_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/standard_padding"
+                android:layout_marginTop="@dimen/standard_padding"
+                android:layout_marginBottom="@dimen/half_standard_padding"
+                android:text="@string/bank_name"
+                android:textColor="@color/label_color"
+                android:textSize="@dimen/card_text_size"
+                app:layout_constraintBottom_toTopOf="@id/bank"
+                app:layout_constraintEnd_toEndOf="@id/bank" />
+
+            <TextView
+                android:id="@+id/bank"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/standard_padding"
+                android:layout_marginTop="@dimen/standard_padding"
+                android:layout_marginEnd="@dimen/standard_padding"
+                android:layout_marginBottom="@dimen/standard_padding"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/card_text_size"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:text="Zenith" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/card_no_layout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/input_text_size"
+        android:layout_marginStart="@dimen/standard_padding"
+        android:layout_marginTop="@dimen/standard_padding"
+        android:layout_marginEnd="@dimen/standard_padding"
+        app:layout_constraintEnd_toEndOf="@id/card_cv"
+        app:layout_constraintStart_toStartOf="@id/card_cv"
+        app:layout_constraintTop_toBottomOf="@id/card_cv">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/card_no_input"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="@string/enter_card_no"
+            android:inputType="number"
+            android:textColorHint="@color/colorPrimaryDark" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/ocr_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/get_no_from_image"
+        android:textColor="@android:color/black"
+        app:layout_constraintEnd_toEndOf="@id/card_no_layout"
+        app:layout_constraintTop_toBottomOf="@id/card_no_layout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

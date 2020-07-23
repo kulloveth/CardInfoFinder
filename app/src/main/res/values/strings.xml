@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">CardInfoFinder</string>
+    <string name="card_type">Card type</string>
+    <string name="bank_name">Bank Name</string>
+    <string name="enter_card_no">enter card no</string>
+    <string name="get_no_from_image">Get No From Image</string>
 </resources>
