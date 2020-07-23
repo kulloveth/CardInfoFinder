@@ -7,17 +7,17 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 //client to log different server response
-fun buildClient(): OkHttpClient = OkHttpClient.Builder()
+private fun buildClient(): OkHttpClient = OkHttpClient.Builder()
     .addInterceptor(HttpLoggingInterceptor().apply {
         level = HttpLoggingInterceptor.Level.BODY
     }).build()
 
 //retrofit builder with httpClient and gsonBuilder
-fun buildRetrofit(): Retrofit {
+private fun buildRetrofit(): Retrofit {
     return Retrofit.Builder().client(buildClient())
         .baseUrl(BASE_URL)
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 }
 
-fun buildApiService() = buildRetrofit().create(RetrofitService::class.java)
+val apiService by lazy { buildRetrofit().create(RetrofitService::class.java) }
