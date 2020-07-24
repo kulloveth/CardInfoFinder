@@ -6,15 +6,21 @@ import android.net.NetworkCapabilities
 import android.os.Build
 import android.text.Editable
 
+//covert string to editable
+fun String.toEditable(): Editable = Editable.Factory.getInstance().newEditable(this)
 
-fun String.toEditable(): Editable =  Editable.Factory.getInstance().newEditable(this)
+//compare nos
 fun Int?.isLessThan(other: Int?) =
     this != null && other != null && this < other
+
+//check network connection
 fun isNetworkAvailable(context: Context?): Boolean {
     if (context == null) return false
-    val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+    val connectivityManager =
+        context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-        val capabilities = connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
+        val capabilities =
+            connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
         if (capabilities != null) {
             when {
                 capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> {
