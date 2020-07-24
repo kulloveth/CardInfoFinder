@@ -15,7 +15,7 @@ class CardApp : Application() {
         instance = this
         super.onCreate()
         /* GlobalScope.launch(context = Dispatchers.IO) {
-            apiService.getCardDetails(BASE_URL+5399235014069108)
+            apiService.getCardDetails(BASE_URL+)
          }*/
 
         Stetho.initializeWithDefaults(this)

@@ -13,11 +13,10 @@ private fun buildClient(): OkHttpClient = OkHttpClient.Builder()
     }).build()
 
 //retrofit builder with httpClient and gsonBuilder
-private fun buildRetrofit(): Retrofit {
+fun buildRetrofit(): Retrofit {
     return Retrofit.Builder().client(buildClient())
         .baseUrl(BASE_URL)
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 }
 
-val apiService by lazy { buildRetrofit().create(RetrofitService::class.java) }
