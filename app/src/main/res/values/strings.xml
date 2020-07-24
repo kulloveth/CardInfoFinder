@@ -5,4 +5,5 @@
     <string name="enter_card_no">enter card no</string>
     <string name="get_no_from_image">Get No From Image</string>
     <string name="camera_denied_message">Camera Permission Denied</string>
+    <string name="no_internet_message">No  internet</string>
 </resources>

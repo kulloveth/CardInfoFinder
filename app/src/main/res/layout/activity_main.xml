@@ -133,6 +133,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:hint="@string/enter_card_no"
+            android:maxLength="19"
             android:inputType="number"
             android:textColorHint="@color/colorPrimaryDark" />
 

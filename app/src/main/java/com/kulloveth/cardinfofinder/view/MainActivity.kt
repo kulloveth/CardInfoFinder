@@ -29,6 +29,8 @@ import com.google.android.material.snackbar.Snackbar
 import com.kulloveth.cardinfofinder.R
 import com.kulloveth.cardinfofinder.data.Injection
 import com.kulloveth.cardinfofinder.databinding.ActivityMainBinding
+import com.kulloveth.cardinfofinder.model.CardResponse
+import com.kulloveth.cardinfofinder.network.Resource
 import com.kulloveth.cardinfofinder.network.Status
 import com.kulloveth.cardinfofinder.utils.*
 import com.theartofdev.edmodo.cropper.CropImage
@@ -48,11 +50,11 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
-
         setContentView(binding?.root)
         view = binding?.cardCv
         //initialize mainViewModel
-        viewModel = ViewModelProvider(this,Injection.provideViewModelFactory())[MainViewModel::class.java]
+        viewModel =
+            ViewModelProvider(this, Injection.provideViewModelFactory())[MainViewModel::class.java]
         getDetailsfromEditText()
         getDetailsFromImage()
     }
@@ -62,46 +64,46 @@ class MainActivity : AppCompatActivity() {
             override fun afterTextChanged(editable: Editable?) {
                 cardNo = editable?.toString()?.trim()
                 binding?.cardNo?.text = cardNo
-                if (isNetworkAvailable(this@MainActivity)){
-                if (cardNo?.length.isLessThan(20)&& !cardNo.equals("")) {
-                    cardNo?.toLong()?.let { no ->
-                        viewModel?.fetchCardDetails(no)?.observe(this@MainActivity, Observer {
-                            Log.d(TAG, "card details are $it")
-                            when (it.status) {
-                                Status.SUCCESS -> {
-                                    binding?.cardType?.text = it.data?.type
-                                    binding?.bank?.text = it.data?.bank?.name
-                                    binding?.schemeType?.text = it.data?.scheme
-                                    binding?.currencyType?.text = it.data?.country?.currency
-                                }
-                                Status.ERROR -> {
-                                    view?.let { view ->
-                                        Snackbar.make(
-                                            view,
-                                            "Something went wrong ${it.message}",
-                                            Snackbar.LENGTH_SHORT
-                                        ).show()
+                if (isNetworkAvailable(this@MainActivity)) {
+                    if (cardNo?.length.isLessThan(20) && !cardNo.equals("")) {
+                        cardNo?.toLong()?.let { no ->
+                            viewModel?.fetchCardDetails(no)?.observe(this@MainActivity, Observer {
+                                Log.d(TAG, "card details are $it")
+                                when (it.status) {
+                                    Status.SUCCESS -> {
+                                        showData(it)
+                                    }
+                                    Status.ERROR -> {
+                                        it.message?.let { it1 -> showError(it1) }
+                                    }
+                                    Status.LOADING -> {
+                                        showLoading()
                                     }
                                 }
-                            }
-                        })
-                    }}else {
-                            binding?.cardType?.text = ""
-                            binding?.bank?.text = ""
-                            binding?.schemeType?.text = ""
-                            binding?.currencyType?.text = ""
+                            })
+                        }
+                    }
+                } else {
+                    view?.let {
+                        Snackbar.make(
+                            it,
+                            getString(R.string.no_internet_message),
+                            Snackbar.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            }
 
-                    } } else{
-                    view?.let { Snackbar.make(it,"No  internet",Snackbar.LENGTH_SHORT).show() }
-                }}
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-        }) }
+        })
+    }
 
     fun getDetailsFromImage() {
         binding?.ocrTv?.setOnClickListener {
             showImageImportDialog()
-        } }
+        }
+    }
 
     fun showImageImportDialog() {
         val items = arrayOf("Camera", "Gallery")
@@ -116,14 +118,20 @@ class MainActivity : AppCompatActivity() {
                             requestCamera()
                         } else {
                             openCamera()
-                        } }
+                        }
+                    }
                     1 -> {
                         //storage option
                         if (!checkStoragePermission()) {
                             //storage permission not allowed
                             requestStorage()
                         } else {
-                            openStorage() } } } } }.create().show()
+                            openStorage()
+                        }
+                    }
+                }
+            }
+        }.create().show()
 
     }
 
@@ -137,15 +145,18 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun checkStoragePermission(): Boolean {
-        return ContextCompat.checkSelfPermission(this,Manifest.permission.WRITE_EXTERNAL_STORAGE
-        ) == (PackageManager.PERMISSION_GRANTED) }
+        return ContextCompat.checkSelfPermission(
+            this, Manifest.permission.WRITE_EXTERNAL_STORAGE
+        ) == (PackageManager.PERMISSION_GRANTED)
+    }
 
 
     //get camera and storage permission
     private fun checkCameraPermission(): Boolean {
         val cameraResult = ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) ==
                 (PackageManager.PERMISSION_GRANTED)
-        return cameraResult }
+        return cameraResult
+    }
 
     private fun openStorage() {
         val intent = Intent(Intent.ACTION_PICK)
@@ -168,26 +179,36 @@ class MainActivity : AppCompatActivity() {
 
     //handle permission result
     override fun onRequestPermissionsResult(
-        requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        requestCode: Int, permissions: Array<out String>, grantResults: IntArray
+    ) {
         when (requestCode) {
             CAMERA_REQUEST_CODE -> {
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     openCamera()
                 } else {
-                    Toast.makeText(this, getString(R.string.camera_denied_message), Toast.LENGTH_LONG
-                    ).show() } }
+                    Toast.makeText(
+                        this, getString(R.string.camera_denied_message), Toast.LENGTH_LONG
+                    ).show()
+                }
+            }
 
 
             STORAGE_REQUEST_CODE -> {
                 if (grantResults.isNotEmpty()) {
-                    val writeToStorageAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED
+                    val writeToStorageAccepted =
+                        grantResults[0] == PackageManager.PERMISSION_GRANTED
                     if (writeToStorageAccepted) {
                         openStorage()
                     } else {
                         view?.let {
                             Snackbar.make(it, "GALERY PERMISSION DENIED", Snackbar.LENGTH_SHORT)
-                                .show() } } } }
-            else -> super.onRequestPermissionsResult(requestCode, permissions, grantResults) }
+                                .show()
+                        }
+                    }
+                }
+            }
+            else -> super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        }
     }
 
     //handle imageResult
@@ -220,21 +241,46 @@ class MainActivity : AppCompatActivity() {
                     }
                     recognizer.release()
                 } else {
-                    recognizer.setProcessor(object :Detector.Processor<TextBlock>{
+                    recognizer.setProcessor(object : Detector.Processor<TextBlock> {
                         override fun release() {
                         }
+
                         override fun receiveDetections(detector: Detector.Detections<TextBlock>) {
                             val textBlocks = detector.detectedItems
                             for (i in 0 until textBlocks.size()) {
                                 val textBlock = textBlocks[textBlocks.keyAt(i)]
-                                binding?.cardNoInput?.text = textBlock?.toString()?.toEditable() }
+                                binding?.cardNoInput?.text = textBlock?.toString()?.toEditable()
+                            }
                             recognizer.release()
-                        }})}
+                        }
+                    })
+                }
                 recognizer.receiveFrame(frame)
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 val error = result.error
                 view?.let {
-                    Snackbar.make(it, "$error", Snackbar.LENGTH_SHORT).show() } } } }
+                    Snackbar.make(it, "$error", Snackbar.LENGTH_SHORT).show()
+                } } } }
 
 
+    private fun showError(message: String) {
+        view?.let { view ->
+            Snackbar.make(
+                view,
+                message,
+                Snackbar.LENGTH_SHORT
+            ).show()
+        }
+    }
+
+    private fun showData(it: Resource<CardResponse>) {
+        binding?.cardType?.text = it.data?.type
+        binding?.bank?.text = it.data?.bank?.name
+        binding?.schemeType?.text = it.data?.scheme
+        binding?.currencyType?.text = it.data?.country?.currency
+    }
+
+    private fun showLoading() {
+        Toast.makeText(this, "loading data", Toast.LENGTH_SHORT).show()
+    }
 }

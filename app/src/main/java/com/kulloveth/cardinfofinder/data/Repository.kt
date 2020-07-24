@@ -11,7 +11,6 @@ open class Repository(
     private val retrofitService: RetrofitService,
     private val responseHandler: ResponseHandler
 ) : CardRepository {
-
     override suspend fun fetchCardDetails(cardNo: Long): Resource<CardResponse> {
         return try {
             val response = retrofitService.getCardDetails(BASE_URL + cardNo)

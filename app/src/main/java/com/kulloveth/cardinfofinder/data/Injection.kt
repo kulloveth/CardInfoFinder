@@ -12,7 +12,7 @@ import com.kulloveth.cardinfofinder.view.ViewModelFactory
  * */
 object Injection {
 
-    private val retrofitService by lazy { buildRetrofit().create(RetrofitService::class.java) }
+   val retrofitService by lazy { buildRetrofit().create(RetrofitService::class.java) }
 
     private fun provideRepository(): Repository {
         return Repository(retrofitService, ResponseHandler())
