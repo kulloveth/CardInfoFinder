@@ -7,7 +7,6 @@ class CardApp : Application() {
 
     companion object {
         private lateinit var instance: CardApp
-
         fun getContext() = instance.applicationContext
     }
 

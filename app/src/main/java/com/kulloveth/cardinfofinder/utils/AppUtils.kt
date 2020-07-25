@@ -5,6 +5,10 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
 import android.text.Editable
+import android.view.View
+import android.widget.Toast
+import androidx.constraintlayout.widget.ConstraintLayout
+import com.google.android.material.snackbar.Snackbar
 
 //covert string to editable
 fun String.toEditable(): Editable = Editable.Factory.getInstance().newEditable(this)
@@ -12,6 +16,20 @@ fun String.toEditable(): Editable = Editable.Factory.getInstance().newEditable(t
 //compare nos
 fun Int?.isLessThan(other: Int?) =
     this != null && other != null && this < other
+
+//check that string chars are numbers only
+fun String.intOrString() = toIntOrNull() ?: this
+
+fun Context.showToast(message: String){
+    Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+}
+//show snackbar
+fun View.showSnackBar(message: String) {
+    val params: ConstraintLayout.LayoutParams = this.layoutParams as ConstraintLayout.LayoutParams
+    params.setMargins(50, 50, 20, 50)
+    this.layoutParams = params
+    Snackbar.make(this, message, Snackbar.LENGTH_SHORT)
+}
 
 //check network connection
 fun isNetworkAvailable(context: Context?): Boolean {

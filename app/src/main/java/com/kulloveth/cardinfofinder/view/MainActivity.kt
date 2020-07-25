@@ -51,7 +51,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding?.root)
-        view = binding?.cardCv
+        view = binding?.root
         //initialize mainViewModel
         viewModel =
             ViewModelProvider(this, Injection.provideViewModelFactory())[MainViewModel::class.java]
@@ -66,31 +66,29 @@ class MainActivity : AppCompatActivity() {
                 binding?.cardNo?.text = cardNo
                 if (isNetworkAvailable(this@MainActivity)) {
                     if (cardNo?.length.isLessThan(20) && !cardNo.equals("")) {
-                        cardNo?.toLong()?.let { no ->
-                            viewModel?.fetchCardDetails(no)?.observe(this@MainActivity, Observer {
-                                Log.d(TAG, "card details are $it")
-                                when (it.status) {
-                                    Status.SUCCESS -> {
-                                        showData(it)
-                                    }
-                                    Status.ERROR -> {
-                                        it.message?.let { it1 -> showError(it1) }
-                                    }
-                                    Status.LOADING -> {
-                                        showLoading()
-                                    }
-                                }
-                            })
+                        if (cardNo?.intOrString() is Number) {
+                            cardNo?.toLong()?.let { no ->
+                                viewModel?.fetchCardDetails(no)
+                                    ?.observe(this@MainActivity, Observer {
+                                        Log.d(TAG, "card details are $it")
+                                        when (it.status) {
+                                            Status.SUCCESS -> {
+                                                showData(it)
+                                            }
+                                            Status.ERROR -> {
+                                                it.message?.let { it1 -> showError(it1) }
+                                            }
+                                            Status.LOADING -> {
+                                                showLoading() }
+                                        }
+                                    })
+                            }
+                        } else {
+                            showToast(getString(R.string.invalid_no_message))
                         }
                     }
                 } else {
-                    view?.let {
-                        Snackbar.make(
-                            it,
-                            getString(R.string.no_internet_message),
-                            Snackbar.LENGTH_SHORT
-                        ).show()
-                    }
+                    showToast(getString(R.string.no_internet_message))
                 }
             }
 
@@ -186,12 +184,9 @@ class MainActivity : AppCompatActivity() {
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     openCamera()
                 } else {
-                    Toast.makeText(
-                        this, getString(R.string.camera_denied_message), Toast.LENGTH_LONG
-                    ).show()
+                    showToast(getString(R.string.camera_denied_message))
                 }
             }
-
 
             STORAGE_REQUEST_CODE -> {
                 if (grantResults.isNotEmpty()) {
@@ -200,10 +195,7 @@ class MainActivity : AppCompatActivity() {
                     if (writeToStorageAccepted) {
                         openStorage()
                     } else {
-                        view?.let {
-                            Snackbar.make(it, "GALERY PERMISSION DENIED", Snackbar.LENGTH_SHORT)
-                                .show()
-                        }
+                        showToast(getString(R.string.gallery_denied_message))
                     }
                 }
             }
@@ -232,13 +224,7 @@ class MainActivity : AppCompatActivity() {
                 val recognizer: TextRecognizer = TextRecognizer.Builder(applicationContext).build()
                 val frame: Frame = Frame.Builder().setBitmap(bitmap).build()
                 if (!recognizer.isOperational) {
-                    view?.let {
-                        Snackbar.make(
-                            it,
-                            "Error has occured please try again",
-                            Snackbar.LENGTH_SHORT
-                        ).show()
-                    }
+                    showToast(getString(R.string.recognizer_error_message))
                     recognizer.release()
                 } else {
                     recognizer.setProcessor(object : Detector.Processor<TextBlock> {
@@ -258,19 +244,14 @@ class MainActivity : AppCompatActivity() {
                 recognizer.receiveFrame(frame)
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 val error = result.error
-                view?.let {
-                    Snackbar.make(it, "$error", Snackbar.LENGTH_SHORT).show()
-                } } } }
+                showToast("$error")
+            }
+        }
+    }
 
 
     private fun showError(message: String) {
-        view?.let { view ->
-            Snackbar.make(
-                view,
-                message,
-                Snackbar.LENGTH_SHORT
-            ).show()
-        }
+        showToast(message)
     }
 
     private fun showData(it: Resource<CardResponse>) {
@@ -278,9 +259,10 @@ class MainActivity : AppCompatActivity() {
         binding?.bank?.text = it.data?.bank?.name
         binding?.schemeType?.text = it.data?.scheme
         binding?.currencyType?.text = it.data?.country?.currency
+        binding?.country?.text = it.data?.country?.name
     }
 
     private fun showLoading() {
-        Toast.makeText(this, "loading data", Toast.LENGTH_SHORT).show()
+        showToast("loading data")
     }
 }

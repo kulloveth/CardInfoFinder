@@ -2,6 +2,8 @@ package com.kulloveth.cardinfofinder.view
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
+import com.kulloveth.cardinfofinder.CardApp
+import com.kulloveth.cardinfofinder.R
 import com.kulloveth.cardinfofinder.data.CardRepository
 import com.kulloveth.cardinfofinder.data.Repository
 import com.kulloveth.cardinfofinder.model.Bank

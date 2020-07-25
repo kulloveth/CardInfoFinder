@@ -6,4 +6,11 @@
     <string name="get_no_from_image">Get No From Image</string>
     <string name="camera_denied_message">Camera Permission Denied</string>
     <string name="no_internet_message">No  internet</string>
+    <string name="currency">Currency</string>
+    <string name="scheme">Scheme</string>
+    <string name="invalid_no_mesage">No is not valid</string>
+    <string name="gallery_denied_message">GALLERY PERMISSION DENIED</string>
+    <string name="recognizer_error_message">Error has occurred please try again</string>
+    <string name="invalid_no_message">invalid card no</string>
+    <string name="something_went_wrong">Something went wrong</string>
 </resources>

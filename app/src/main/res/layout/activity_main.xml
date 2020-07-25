@@ -18,33 +18,61 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+
+            <TextView
+                android:id="@+id/scheme_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/standard_padding"
+                android:layout_marginTop="@dimen/standard_padding"
+                android:text="@string/scheme"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/card_text_size"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/scheme_type"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/standard_padding"
-                android:layout_marginTop="@dimen/standard_padding"
+                android:layout_marginTop="@dimen/half_standard_padding"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/card_text_size"
+                android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/scheme_tv"
                 tools:text="Visa" />
+
+            <TextView
+                android:id="@+id/currency_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/standard_padding"
+                android:layout_marginTop="@dimen/standard_padding"
+                android:layout_marginEnd="@dimen/standard_padding"
+                android:text="@string/currency"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/card_text_size"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/currency_type"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/standard_padding"
-                android:layout_marginTop="@dimen/standard_padding"
+                android:layout_marginTop="@dimen/half_standard_padding"
                 android:layout_marginEnd="@dimen/standard_padding"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/card_text_size"
+                android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/currency_tv"
                 tools:text="NGN" />
 
             <TextView
@@ -57,6 +85,19 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="**** **** **** ****" />
+
+            <TextView
+                android:id="@+id/country"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/half_standard_padding"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/card_text_size"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Country" />
 
             <TextView
                 android:id="@+id/card_type_label"
@@ -133,8 +174,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:hint="@string/enter_card_no"
-            android:maxLength="19"
             android:inputType="number"
+            android:maxLength="19"
             android:textColorHint="@color/colorPrimaryDark" />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -147,7 +188,6 @@
         android:textColor="@android:color/black"
         app:layout_constraintEnd_toEndOf="@id/card_no_layout"
         app:layout_constraintTop_toBottomOf="@id/card_no_layout" />
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
