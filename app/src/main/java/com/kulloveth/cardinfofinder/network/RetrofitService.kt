@@ -6,5 +6,5 @@ import retrofit2.http.Url
 
 interface RetrofitService {
     @GET
-    suspend fun getCardDetails(@Url cardNo: String):CardResponse
+    suspend fun getCardDetails(@Url cardNo: String): CardResponse
 }

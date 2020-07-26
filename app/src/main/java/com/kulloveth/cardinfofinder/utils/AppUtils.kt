@@ -20,9 +20,10 @@ fun Int?.isLessThan(other: Int?) =
 //check that string chars are numbers only
 fun String.intOrString() = toIntOrNull() ?: this
 
-fun Context.showToast(message: String){
+fun Context.showToast(message: String) {
     Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
 }
+
 //show snackbar
 fun View.showSnackBar(message: String) {
     val params: ConstraintLayout.LayoutParams = this.layoutParams as ConstraintLayout.LayoutParams

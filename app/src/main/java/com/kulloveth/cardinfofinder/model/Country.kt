@@ -8,6 +8,6 @@ data class Country(
     @SerializedName("name") val name: String,
     @SerializedName("emoji") val emoji: String,
     @SerializedName("currency") val currency: String,
-    @SerializedName("latitude") val latitude: Int,
-    @SerializedName("longitude") val longitude: Int
+    @SerializedName("latitude") val latitude: Double,
+    @SerializedName("longitude") val longitude: Double
 )

@@ -29,11 +29,6 @@ class MainActivityTest {
         ActivityScenario.launch(MainActivity::class.java)
     }
 
-
-
-
-
-
     @Test
     fun checkThatCountryISDisplayed() {
         ActivityScenario.launch(MainActivity::class.java)

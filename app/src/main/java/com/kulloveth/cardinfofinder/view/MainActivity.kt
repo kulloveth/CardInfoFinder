@@ -14,7 +14,6 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -25,7 +24,6 @@ import com.google.android.gms.vision.Detector
 import com.google.android.gms.vision.Frame
 import com.google.android.gms.vision.text.TextBlock
 import com.google.android.gms.vision.text.TextRecognizer
-import com.google.android.material.snackbar.Snackbar
 import com.kulloveth.cardinfofinder.R
 import com.kulloveth.cardinfofinder.data.Injection
 import com.kulloveth.cardinfofinder.databinding.ActivityMainBinding
@@ -35,6 +33,7 @@ import com.kulloveth.cardinfofinder.network.Status
 import com.kulloveth.cardinfofinder.utils.*
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
+import java.lang.StringBuilder
 
 
 class MainActivity : AppCompatActivity() {
@@ -235,7 +234,8 @@ class MainActivity : AppCompatActivity() {
                             val textBlocks = detector.detectedItems
                             for (i in 0 until textBlocks.size()) {
                                 val textBlock = textBlocks[textBlocks.keyAt(i)]
-                                binding?.cardNoInput?.text = textBlock?.toString()?.toEditable()
+                                val sb = StringBuilder(textBlock.toString())
+                                binding?.cardNoInput?.text = sb.toString().toEditable()
                             }
                             recognizer.release()
                         }
