@@ -6,8 +6,9 @@ import com.kulloveth.cardinfofinder.network.ResponseHandler
 import com.kulloveth.cardinfofinder.network.RetrofitService
 import com.kulloveth.cardinfofinder.utils.BASE_URL
 import retrofit2.HttpException
+import javax.inject.Inject
 
-open class Repository(
+open class Repository @Inject constructor(
     private val retrofitService: RetrofitService,
     private val responseHandler: ResponseHandler
 ) : CardRepository {

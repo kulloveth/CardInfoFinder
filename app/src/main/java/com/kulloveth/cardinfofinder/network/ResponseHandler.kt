@@ -1,6 +1,9 @@
 package com.kulloveth.cardinfofinder.network
 
-open class ResponseHandler {
+import javax.inject.Inject
+
+
+open class ResponseHandler @Inject constructor() {
     fun <T : Any> handleSuccess(data: T): Resource<T> {
         return Resource.success(data)
     }

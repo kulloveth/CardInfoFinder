@@ -14,18 +14,17 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
+import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import com.google.android.gms.vision.Detector
 import com.google.android.gms.vision.Frame
 import com.google.android.gms.vision.text.TextBlock
 import com.google.android.gms.vision.text.TextRecognizer
 import com.kulloveth.cardinfofinder.R
-import com.kulloveth.cardinfofinder.data.Injection
 import com.kulloveth.cardinfofinder.databinding.ActivityMainBinding
 import com.kulloveth.cardinfofinder.model.CardResponse
 import com.kulloveth.cardinfofinder.network.Resource
@@ -33,14 +32,15 @@ import com.kulloveth.cardinfofinder.network.Status
 import com.kulloveth.cardinfofinder.utils.*
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
+import dagger.hilt.android.AndroidEntryPoint
 import java.lang.StringBuilder
 
-
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private val TAG = MainActivity::class.java.simpleName
     private var binding: ActivityMainBinding? = null
-    private var viewModel: MainViewModel? = null
+    private val viewModel: MainViewModel by viewModels()
     var cardNo: String? = null
     var view: View? = null
     var storagePermission = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -52,8 +52,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding?.root)
         view = binding?.root
         //initialize mainViewModel
-        viewModel =
-            ViewModelProvider(this, Injection.provideViewModelFactory())[MainViewModel::class.java]
+
         getDetailsfromEditText()
         getDetailsFromImage()
     }

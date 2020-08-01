@@ -2,7 +2,9 @@ package com.kulloveth.cardinfofinder
 
 import android.app.Application
 import com.facebook.stetho.Stetho
+import dagger.hilt.android.HiltAndroidApp
 
+@HiltAndroidApp
 class CardApp : Application() {
 
     companion object {
