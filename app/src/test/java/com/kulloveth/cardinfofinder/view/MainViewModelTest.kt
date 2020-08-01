@@ -31,7 +31,7 @@ class MainViewModelTest {
     private val successRessource = Resource.success(
         CardResponse(
             "visa", "", "", Country
-                (124, "CA", "Canada", "ca", "CAD", 60, -95),
+                (124, "CA", "Canada", "ca", "CAD", 60.0, -95.5),
             Bank("", "", "")
         )
     )
