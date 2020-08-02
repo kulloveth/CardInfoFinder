@@ -24,6 +24,8 @@ import com.google.android.gms.vision.Detector
 import com.google.android.gms.vision.Frame
 import com.google.android.gms.vision.text.TextBlock
 import com.google.android.gms.vision.text.TextRecognizer
+import com.google.firebase.ml.vision.FirebaseVision
+import com.google.firebase.ml.vision.common.FirebaseVisionImage
 import com.kulloveth.cardinfofinder.R
 import com.kulloveth.cardinfofinder.databinding.ActivityMainBinding
 import com.kulloveth.cardinfofinder.model.CardResponse
@@ -219,28 +221,20 @@ class MainActivity : AppCompatActivity() {
             if (resultCode == Activity.RESULT_OK) {
                 val resultUri = result.uri
                 val bitmap: Bitmap = getBitmap(this.getContentResolver(), resultUri)
-                val recognizer: TextRecognizer = TextRecognizer.Builder(applicationContext).build()
-                val frame: Frame = Frame.Builder().setBitmap(bitmap).build()
-                if (!recognizer.isOperational) {
-                    showToast(getString(R.string.recognizer_error_message))
-                    recognizer.release()
-                } else {
-                    recognizer.setProcessor(object : Detector.Processor<TextBlock> {
-                        override fun release() {
+                val image = FirebaseVisionImage.fromBitmap(bitmap)
+                val detector = FirebaseVision.getInstance()
+                    .onDeviceTextRecognizer
+                detector.processImage(image)
+                    .addOnSuccessListener { firbaseResult ->
+                        for (block in firbaseResult.textBlocks) {
+                            val blockText = block.text
+                            binding?.cardNoInput?.text = blockText.toEditable()
                         }
-
-                        override fun receiveDetections(detector: Detector.Detections<TextBlock>) {
-                            val textBlocks = detector.detectedItems
-                            for (i in 0 until textBlocks.size()) {
-                                val textBlock = textBlocks[textBlocks.keyAt(i)]
-                                val sb = StringBuilder(textBlock.toString())
-                                binding?.cardNoInput?.text = sb.toString().toEditable()
-                            }
-                            recognizer.release()
-                        }
-                    })
-                }
-                recognizer.receiveFrame(frame)
+                    }
+                    .addOnFailureListener { e ->
+                        // Task failed with an exception
+                        // ...
+                    }
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 val error = result.error
                 showToast("$error")

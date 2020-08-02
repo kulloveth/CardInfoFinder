@@ -14,8 +14,9 @@ class MainViewModel @ViewModelInject constructor(private val repository: CardRep
     //liveData method to hold response gotten from api
     fun fetchCardDetails(cardNo: Long) =
         liveData {
-            emit(repository.fetchCardDetails(cardNo))
             emit(Resource.loading(null))
+            emit(repository.fetchCardDetails(cardNo))
+
     }
 
 }
