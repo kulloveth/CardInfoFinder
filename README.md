@@ -1,5 +1,5 @@
 # CardInfoFinder
-## An application that will accept cardNo from a user by either soft input or by scanning card and display their card details
+## An application that will accept cardNo from a user by either soft input or by Text Recognition and display their card details
 # Features
 * User can  Enter cardNo via softInput keyboard to view Card details
 * MVVM Architecture
@@ -19,5 +19,8 @@
 * for null safety and to reduce lines of code referncing views
 ### Mockito
 * To create fake data for Unit tests
-### Text Recognition
+### [Firebase MLkit](https://firebase.google.com/docs/ml-kit/android/recognize-text#kotlin+ktx_9)
+* For recognizing text on images
+### [Dagger-Hilt](https://developer.android.com/training/dependency-injection/hilt-android)
+* For Dependency Injection
 
